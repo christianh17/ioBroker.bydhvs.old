@@ -16,7 +16,8 @@
     "url": "https://github.com/ChristianH17/ioBroker.bydhvs"
   },
   "dependencies": {
-    "@iobroker/adapter-core": "^2.4.0"
+    "@iobroker/adapter-core": "^2.4.0",
+    "crc": "3.4.0"
   },
   "devDependencies": {
     "@iobroker/testing": "^2.4.2",
