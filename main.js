@@ -57,6 +57,8 @@ var myStates = [
 
 ]
 
+
+
 /** @type {NodeJS.Timeout} */
 let idInterval1;
 
@@ -450,8 +452,8 @@ function decode2ndPacket(data) {
     hvsError = buf2int16(byteArray, 29);
     hvsParamT = byteArray[31].toString() + "." + byteArray[32].toString();
     hvsOutVolt = (buf2int16(byteArray, 35) * 1.0 / 100.0).toFixed(1);
-    hvsPower = (hvsA * hvsOutVolt).toFixed(2);
-    hvsDiffVolt = (hvsMaxVolt - hvsMinVolt).toFixed(2);
+    hvsPower = (parseFloat(hvsA) * parseFloat(hvsOutVolt)).toFixed(2);
+    hvsDiffVolt = (parseFloat(hvsMaxVolt) - parseFloat(hvsMinVolt)).toFixed(2);
     hvsErrorString = "";
     //        hvsError = 65535;
     for (var j = 0; j < 16; j++) {
