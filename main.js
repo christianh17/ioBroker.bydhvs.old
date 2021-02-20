@@ -170,8 +170,8 @@ function startAdapter(options) {
 
 
 function setObjects() {
-	adapter.setObjectNotExists('System.Serial', {
-		type: 'state',
+    adapter.setObjectNotExists('System.Serial', {
+        type: 'state',
         common: {
             name: 'Serial number',
             type: 'string',
@@ -180,8 +180,8 @@ function setObjects() {
             write: false,
             unit: ''
         },
-		native: {}
-	});    
+        native: {}
+    });
     adapter.setObjectNotExists('System.BMU', {
         type: 'state',
         common: {
@@ -464,7 +464,7 @@ function decode2ndPacket(data) {
             hvsErrorString += myErrors[j];
         }
     }
-    if (hvsErrorString.length === 0) { hvsErrorString = "no Error"}
+    if (hvsErrorString.length === 0) { hvsErrorString = "no Error" }
 }
 
 function setConnected(adapter, isConnected) {
@@ -500,29 +500,29 @@ function setStates() {
     adapter.log.silly('hvsError   >' + hvsError + '<')
     adapter.log.silly('hvsErrorSt >' + hvsErrorString + '<')
 
-    adapter.setState('System.Serial',hvsSerial);
-    adapter.setState('System.BMU',hvsBMU);
-    adapter.setState('System.BMS',hvsBMS);  
-    adapter.setState('System.Modules',hvsModules);
-    adapter.setState('System.Grid',hvsGrid);  
-    adapter.setState('State.SOC',hvsSOC);
-    adapter.setState('State.VoltMax',hvsMaxVolt);
-    adapter.setState('State.VoltMin',hvsMinVolt);  
-    adapter.setState('State.Current',hvsA);
-    adapter.setState('State.VoltBatt',hvsBattVolt);  
-    adapter.setState('State.TempMax',hvsMaxTemp);
-    adapter.setState('State.TempMin',hvsMinTemp);
-    adapter.setState('State.VoltDiff',hvsDiffVolt);  
-    adapter.setState('State.Power',hvsPower);
-    adapter.setState('System.ParamT',hvsParamT);  
-    adapter.setState('State.TempBatt',hvsBatTemp);
-    adapter.setState('State.VoltOut',hvsOutVolt);
-    adapter.setState('State.ErrorNum',hvsError);  
-    adapter.setState('State.ErrorStr',hvsErrorString);
+    adapter.setState('System.Serial', hvsSerial);
+    adapter.setState('System.BMU', hvsBMU);
+    adapter.setState('System.BMS', hvsBMS);
+    adapter.setState('System.Modules', hvsModules);
+    adapter.setState('System.Grid', hvsGrid);
+    adapter.setState('State.SOC', hvsSOC);
+    adapter.setState('State.VoltMax', hvsMaxVolt);
+    adapter.setState('State.VoltMin', hvsMinVolt);
+    adapter.setState('State.Current', hvsA);
+    adapter.setState('State.VoltBatt', hvsBattVolt);
+    adapter.setState('State.TempMax', hvsMaxTemp);
+    adapter.setState('State.TempMin', hvsMinTemp);
+    adapter.setState('State.VoltDiff', hvsDiffVolt);
+    adapter.setState('State.Power', hvsPower);
+    adapter.setState('System.ParamT', hvsParamT);
+    adapter.setState('State.TempBatt', hvsBatTemp);
+    adapter.setState('State.VoltOut', hvsOutVolt);
+    adapter.setState('State.ErrorNum', hvsError);
+    adapter.setState('State.ErrorStr', hvsErrorString);
 }
 
 function startPoll(adapter) {
-    //erster Start sofort, dann entsprechend der Config - dann muss man nicht beim Entwickeln warten bis der erste Timer durch ist.
+    //erster Start sofort (500ms), dann entsprechend der Config - dann muss man nicht beim Entwickeln warten bis der erste Timer durch ist.
     setTimeout(() => { Poll(adapter) }, 500)
     idInterval1 = setInterval(() => Poll(adapter), adapter.config.ConfPollInterval * 1000);
     adapter.log.info("gestartet: " + adapter.config.ConfPollInterval + " " + idInterval1);
@@ -537,10 +537,10 @@ IPClient.on('data', function (data) {
     if (checkPacket(data) == false) {
         adapter.log.error('error: no valid data');
         IPClient.destroy();
-        setConnected(false);
+        setConnected(adapter,false);
         myState = 0;
     }
-    setConnected(true);
+    setConnected(adapter,true);
     switch (myState) {
         case 2:
             decode1stPacket(data);
@@ -564,7 +564,7 @@ IPClient.on('data', function (data) {
 
 IPClient.on('timeout', function () {
     IPClient.destroy();
-    setConnected(false);
+    setConnected(adapter,false);
     myState = 0;
     adapter.log.error('no connection to IP: ' + adapter.config.ConfIPAdress);
 });
@@ -575,7 +575,7 @@ function Poll(adapter) {
     adapter.log.silly('Poll start, IP:' + adapter.config.ConfIPAdress)
     IPClient.connect(8080, adapter.config.ConfIPAdress, function () {
         myState = 2;
-        setConnected(true);
+        setConnected(adapter,true);
         IPClient.write(myRequests[0]);
     });
 }
@@ -598,13 +598,13 @@ async function main() {
     startPoll(adapter);
 
     // examples for the checkPassword/checkGroup functions
-/*    adapter.checkPassword("admin", "iobroker", (res) => {
-        adapter.log.info("check user admin pw iobroker: " + res);
-    });
-
-    adapter.checkGroup("admin", "admin", (res) => {
-        adapter.log.info("check group user admin group admin: " + res);
-    });*/
+    /*    adapter.checkPassword("admin", "iobroker", (res) => {
+            adapter.log.info("check user admin pw iobroker: " + res);
+        });
+    
+        adapter.checkGroup("admin", "admin", (res) => {
+            adapter.log.info("check group user admin group admin: " + res);
+        });*/
 }
 
 // @ts-ignore parent is a valid property on module
