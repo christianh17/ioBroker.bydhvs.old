@@ -60,8 +60,8 @@
     "dependencies": [
       {
         "@iobroker/adapter-core": "^2.3.1",
-        "js-controller": ">=2.0.0",
-        "@strathcole/iob-lib": "^0.1.2"
+        "@strathcole/iob-lib": "^0.1.2",
+        "js-controller": ">=2.0.0"
       }
     ]
   },

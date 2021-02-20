@@ -6,9 +6,9 @@
 
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
-const utils = require("@iobroker/adapter-core");
+const utils = require('@iobroker/adapter-core'); // Get common adapter utils
 const crc = require('crc');
-const ioBLib = require('@strathcole/iob-lib').ioBLib;
+//const ioBLib = require('strathcole/iob-lib').ioBLib;
 var net = require('net');
 var IPClient = new net.Socket();
 
@@ -537,10 +537,10 @@ IPClient.on('data', function (data) {
     if (checkPacket(data) == false) {
         adapter.log.error('error: no valid data');
         IPClient.destroy();
-        setConnected(adapter,false);
+        setConnected(adapter, false);
         myState = 0;
     }
-    setConnected(adapter,true);
+    setConnected(adapter, true);
     switch (myState) {
         case 2:
             decode1stPacket(data);
@@ -564,7 +564,7 @@ IPClient.on('data', function (data) {
 
 IPClient.on('timeout', function () {
     IPClient.destroy();
-    setConnected(adapter,false);
+    setConnected(adapter, false);
     myState = 0;
     adapter.log.error('no connection to IP: ' + adapter.config.ConfIPAdress);
 });
@@ -575,7 +575,7 @@ function Poll(adapter) {
     adapter.log.silly('Poll start, IP:' + adapter.config.ConfIPAdress)
     IPClient.connect(8080, adapter.config.ConfIPAdress, function () {
         myState = 2;
-        setConnected(adapter,true);
+        setConnected(adapter, true);
         IPClient.write(myRequests[0]);
     });
 }
